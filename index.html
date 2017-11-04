@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Yes/No </title>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+  </head>
+
+  <body>
+    <script>
+      const {dialog} = require('electron').remote;
+      var fs = require('fs');
+    </script>
+
+    <script>window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');</script>
+
+    <nav class="navbar navbar-expand-lg bd-navbar">
+      <span class="navbar-brand" href="#">Image Yes/No</span>
+    </nav>
+
+    <div class="container">
+
+      <div id="directory-selection" class="step-1 mx-auto">
+        <button type="button" class="btn btn-success select-directory mx-auto pointer">
+          Select Directory
+        </button>
+      </div>
+
+      <div  class="step-2 mx-auto hidden">
+        <div class="mb-30 text-center">
+          <span> Directory Selected: </span>
+          <span id="selected-directory"></span>
+        </div>
+
+        <div id="directory-selection">
+          <button type="button" class="btn btn-success select-directory mx-auto pointer">
+            Re Select Directory
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="info-toast" class="max-auto">
+    </div>
+    <script src="./scripts/app.js"></script>
+  </body>
+</html>

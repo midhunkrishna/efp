@@ -1,0 +1,37 @@
+body{
+    font-size: 2em;
+}
+
+.bd-navbar{
+    min-height: 4rem;
+    background-color: #563d7c;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.05), inset 0 -1px 0 rgba(0,0,0,.1);
+    color: white;
+    margin-bottom: 5vh;
+}
+
+#directory-selection button.select-directory{
+    width: 300px;
+    display: block;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+#info-toast{
+    position: absolute;
+    bottom: 0px;
+    font-size: 0.5em;
+    border-top: 1px solid rgba(0, 0, 0, 0.7);;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.mb-30{
+    margin-bottom: 30px;
+}
