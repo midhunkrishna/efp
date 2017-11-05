@@ -10,7 +10,7 @@ body{
     margin-bottom: 5vh;
 }
 
-#directory-selection button.select-directory{
+#directory-selection button.btn-success{
     width: 300px;
     display: block;
 }
@@ -20,7 +20,7 @@ body{
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 #info-toast{
@@ -34,4 +34,119 @@ body{
 
 .mb-30{
     margin-bottom: 30px;
+}
+
+.mb-15{
+    margin-bottom: 30px;
+}
+
+#img-holder{
+    width: 80%;
+    display: block;
+}
+
+.centralize-for-step-3{
+    width: 80%;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.action-buttons-right{
+    right: 0px;
+}
+
+.action-buttons-left{
+    left: 0px;
+}
+
+.action-buttons{
+    position: absolute;
+    top: 0px;
+}
+
+.circle{
+    border-radius: 50%;
+}
+
+.action-buttons .circle{
+    color: white;
+    background-color: #563d7c;
+    text-align: center;
+}
+
+
+@media (min-width: 576px) {
+    .ten-percent{
+        width: 57px;
+    }
+
+    .ten-percent-sqr{
+        width: 57px;
+        height: 57px;
+    }
+
+    .oi{
+        margin-top: 11px;
+        display: inline-block;
+    }
+
+}
+
+@media (min-width: 768px) {
+    .ten-percent{
+        width: 76px;
+    }
+
+    .ten-percent-sqr{
+        width: 76px;
+        height: 76px;
+    }
+
+    .oi{
+        margin-top: 22px;
+        display: inline-block;
+    }
+}
+
+@media (min-width: 992px) {
+    .ten-percent{
+        width: 99px;
+    }
+
+    .ten-percent-sqr{
+        width: 99px;
+        height: 99px;
+    }
+
+    .oi{
+        margin-top: 34px;
+        display: inline-block;
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .ten-percent{
+        width: 120px;
+    }
+
+    .ten-percent-sqr{
+        width: 120px;
+        height: 120px;
+
+    }
+
+    .oi{
+        margin-top: 43px;
+        display: inline-block;
+    }
+}
+
+
+textarea{
+    width: 90%;
+    height: 100%;
+    height: 78vh;
+    font-size: 0.5em;
 }

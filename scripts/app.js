@@ -1,16 +1,3 @@
-console.log('from apps.js');
-
-var toast = function(message) {
-  var toastContainer = $('#info-toast');
-  toastContainer.html(message);
-  toastContainer.removeClass('hidden');
-  console.log(message);
-
-  setTimeout(function() {
-    toastContainer.addClass('hidden');
-  }, 2000);
-};
-
 var selectDirectory = function(callback) {
   dialog.showOpenDialog({
     title:"Select a folder",
@@ -20,20 +7,125 @@ var selectDirectory = function(callback) {
   });
 }
 
-var makeVisible = function(currentClass) {
-  $("div[class^='step-']").addClass('hidden');
-  $(currentClass).removeClass('hidden');
-};
-
 $(".select-directory").on('click', function() {
   selectDirectory(function(folderPaths) {
     // folderPaths is an array that contains all the selected paths
     if(folderPaths === undefined){
-      toast("No image folder selected");
+      U.toast("No image folder selected");
     }else{
-      toast("Selected Folder: " + folderPaths[0]);
+      U.toast("Selected Folder: " + folderPaths[0]);
       $('#selected-directory').html(folderPaths[0]);
-      makeVisible('.step-2');
+      U.lstore('directory', folderPaths[0]);
+      U.makeVisible('.step-2');
     }
   });
+});
+
+$('.proceed-to-yes-no').on('click', function() {
+  var directory = U.lget('directory');
+  U.toast("Proceeding to select images from " +  directory);
+
+  var files = fs.readdirSync(directory);
+  var imageFiles = R.filter(U.isImage, files);
+
+  U.lstore('images', imageFiles);
+
+  if(imageFiles.length > 0) {
+    U.loadImage(imageFiles[0]);
+    initImgJson(imageFiles);
+    U.makeVisible('.step-3');
+  } else {
+    $('#selected-directory').html("No image files present in directory");
+    U.toast("No image files present in directory");
+  }
+});
+
+var initImgJson = function(images) {
+  var j = R.reduce(function(acc, value) {
+    acc[U.fullPath(value)] = null;
+    return acc;
+  }, {}, images);
+
+  U.lstore('imageDict', JSON.stringify(j));
+}
+
+// efp-select
+
+
+$('.efp-select').on('click', function() {
+  selectAs('normal');
+});
+
+$('.efp-deselect').on('click', function() {
+  selectAs('abnormal');
+});
+
+$('.efp-save-dump').on('click', function(){
+  $("#resultJson").val(U.lget('imageDict'));
+  U.makeVisible('.step-5');
+});
+
+var selectAs = function(selectionType) {
+  var imageFiles = U.lget('images').split(',');
+  var cidx = parseInt(U.lget('cidx'), 10) || 0;
+  var nidx = cidx + 1;
+
+  var cImg = imageFiles[cidx];
+  var nImg = imageFiles[nidx];
+
+  if(nImg) {
+    U.loadImage(nImg);
+  } else {
+    U.toast('Viewed All Images');
+    U.makeVisible('.step-4');
+  }
+
+  if(cImg) {
+    U.setImageSelection(imageFiles[cidx], selectionType);
+    U.lstore('cidx', nidx);
+  }
+}
+
+$('.back-once').on('click', function() {
+  var imageFiles = U.lget('images').split(',');
+  var cidx = parseInt(U.lget('cidx'), 10) || 0;
+
+  if(cidx > 0) {
+    var bidx = cidx - 1;
+
+    var cImg = imageFiles[bidx];
+    if(cImg) {
+      U.makeVisible('.step-3');
+      U.loadImage(cImg);
+      U.lstore('cidx', bidx);
+    } else {
+      U.toast('Cannot go back. No image history back this point');
+    }
+  }
+});
+
+$('.reset').on('click', function() {
+  U.toast('Starting from beginning');
+  setTimeout(function() {
+    localStorage.clear();
+    window.location.reload();
+  }, 2000);
+});
+
+
+
+
+$(function(){
+  var directory = U.lget('directory');
+  var imageFilesString = U.lget('images');
+  if(imageFilesString) {
+    var imageFiles = U.lget('images').split(',');
+  }
+
+
+  if(directory && imageFilesString) {
+    var currentImage = U.lget('cidx');
+    U.loadImage(imageFiles[currentImage]);
+    U.makeVisible('.step-3');
+  }
 });

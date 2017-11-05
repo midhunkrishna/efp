@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title> Yes/No </title>
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="node_modules/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.css">
   </head>
 
@@ -11,21 +12,21 @@
     <script>
       const {dialog} = require('electron').remote;
       var fs = require('fs');
+      const R = require('ramda');
+      window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
     </script>
-
-    <script>window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');</script>
 
     <nav class="navbar navbar-expand-lg bd-navbar">
       <span class="navbar-brand" href="#">Image Yes/No</span>
     </nav>
 
     <div class="container">
-
       <div id="directory-selection" class="step-1 mx-auto">
         <button type="button" class="btn btn-success select-directory mx-auto pointer">
           Select Directory
         </button>
       </div>
+
 
       <div  class="step-2 mx-auto hidden">
         <div class="mb-30 text-center">
@@ -34,16 +35,88 @@
         </div>
 
         <div id="directory-selection">
-          <button type="button" class="btn btn-success select-directory mx-auto pointer">
+          <button type="button" class="mb-15 btn btn-success select-directory mx-auto pointer">
             Re Select Directory
           </button>
+
+          <button type="button" class="btn btn-success proceed-to-yes-no mx-auto pointer">
+            Proceed
+          </button>
+
         </div>
       </div>
 
+      <div class="step-3 mx-auto hidden">
+        <img id="img-holder" class="mx-auto" src="">
+
+        <div class="action-buttons action-buttons-right">
+          <div class="efp-save-dump ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-data-transfer-download" title="save-json-dump" aria-hidden="true"></span>
+          </div>
+
+          <div class="efp-deselect ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-thumb-down" title="deselect" aria-hidden="true"></span>
+          </div>
+
+          <div class="efp-select ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-thumb-up" title="select" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="action-buttons action-buttons-left">
+          <div class="reset ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-loop-square" title="reset-and-reload" aria-hidden="true"></span>
+
+          </div>
+          <div class="back-once ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-action-undo" title="undo" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-4 mx-auto centralize-for-step-3 hidden">
+        <div >
+          <span> No more images to view</span>
+        </div>
+
+        <div class="action-buttons action-buttons-right">
+          <div class="efp-save-dump ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-data-transfer-download" title="save-json-dump" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="action-buttons action-buttons-left">
+          <div class="reset ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-loop-square" title="reset-and-reload" aria-hidden="true"></span>
+
+          </div>
+          <div class="back-once ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-action-undo" title="undo" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-5 mx-auto centralize-for-step-3 hidden">
+        <textarea type="textarea" id="resultJson"></textarea>
+
+        <div class="action-buttons action-buttons-left">
+          <div class="reset ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-loop-square" title="reset-and-reload" aria-hidden="true"></span>
+
+          </div>
+          <div class="back-once ten-percent-sqr mb-15 circle pointer">
+            <span class="oi oi-action-undo" title="undo" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- container -->
 
     <div id="info-toast" class="max-auto">
     </div>
+    <script src="./scripts/util.js"></script>
     <script src="./scripts/app.js"></script>
+    <script src="./scripts/imageSelection.js"></script>
   </body>
 </html>
