@@ -61,8 +61,20 @@ $('.efp-deselect').on('click', function() {
 });
 
 $('.efp-save-dump').on('click', function(){
-  $("#resultJson").val(U.lget('imageDict'));
-  U.makeVisible('.step-5');
+  dialog.showSaveDialog((fileName) => {
+    if (fileName === undefined){
+      U.toast("You didn't save the file");
+      return;
+    }
+
+    fs.writeFile(fileName, U.lget('imageDict'), (err) => {
+      if(err){
+        U.toast("An error ocurred creating the file "+ err.message);
+      }
+
+      U.toast("The file has been succesfully saved");
+    });
+  });
 });
 
 var selectAs = function(selectionType) {
