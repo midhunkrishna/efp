@@ -8,24 +8,26 @@ var selectDirectory = function(callback) {
 }
 
 $(".select-directory").on('click', function() {
-  var cwd = shell.pwd().stdout;
+  var cwd = window.cwd;
 
-  // selectDirectory(function(folderPaths) {
-  //   // folderPaths is an array that contains all the selected paths
-  //   if(folderPaths === undefined){
-  //     U.toast("No image folder selected");
-  //   }else{
-  //     U.toast("Selected Folder: " + folderPaths[0]);
-  //     $('#selected-directory').html(folderPaths[0]);
-  //     U.lstore('directory', folderPaths[0]);
-  //     U.makeVisible('.step-2');
-  //   }
-  // });
-
-  U.toast("Selected Folder: " + cwd);
-  $('#selected-directory').html(cwd);
-  U.lstore('directory', cwd);
-  U.makeVisible('.step-2');
+  if(cwd) {
+    U.toast("Selected Folder: " + cwd);
+    $('#selected-directory').html(cwd);
+    U.lstore('directory', cwd);
+    U.makeVisible('.step-2');
+  } else {
+    selectDirectory(function(folderPaths) {
+      // folderPaths is an array that contains all the selected paths
+      if(folderPaths === undefined){
+        U.toast("No image folder selected");
+      }else{
+        U.toast("Selected Folder: " + folderPaths[0]);
+        $('#selected-directory').html(folderPaths[0]);
+        U.lstore('directory', folderPaths[0]);
+        U.makeVisible('.step-2');
+      }
+    });
+  }
 });
 
 $('.proceed-to-yes-no').on('click', function() {
@@ -133,6 +135,10 @@ $('.reset').on('click', function() {
 
 
 $(function(){
+  if(fs.existsSync('/tmp/directory')) {
+    window.cwd = fs.readFileSync('/tmp/directory', {encoding: 'utf8'});
+  }
+
   var directory = U.lget('directory');
   var imageFilesString = U.lget('images');
   if(imageFilesString) {
