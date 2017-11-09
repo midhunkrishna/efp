@@ -8,17 +8,24 @@ var selectDirectory = function(callback) {
 }
 
 $(".select-directory").on('click', function() {
-  selectDirectory(function(folderPaths) {
-    // folderPaths is an array that contains all the selected paths
-    if(folderPaths === undefined){
-      U.toast("No image folder selected");
-    }else{
-      U.toast("Selected Folder: " + folderPaths[0]);
-      $('#selected-directory').html(folderPaths[0]);
-      U.lstore('directory', folderPaths[0]);
-      U.makeVisible('.step-2');
-    }
-  });
+  var cwd = shell.pwd().stdout;
+
+  // selectDirectory(function(folderPaths) {
+  //   // folderPaths is an array that contains all the selected paths
+  //   if(folderPaths === undefined){
+  //     U.toast("No image folder selected");
+  //   }else{
+  //     U.toast("Selected Folder: " + folderPaths[0]);
+  //     $('#selected-directory').html(folderPaths[0]);
+  //     U.lstore('directory', folderPaths[0]);
+  //     U.makeVisible('.step-2');
+  //   }
+  // });
+
+  U.toast("Selected Folder: " + cwd);
+  $('#selected-directory').html(cwd);
+  U.lstore('directory', cwd);
+  U.makeVisible('.step-2');
 });
 
 $('.proceed-to-yes-no').on('click', function() {
@@ -125,15 +132,12 @@ $('.reset').on('click', function() {
 });
 
 
-
-
 $(function(){
   var directory = U.lget('directory');
   var imageFilesString = U.lget('images');
   if(imageFilesString) {
     var imageFiles = U.lget('images').split(',');
   }
-
 
   if(directory && imageFilesString) {
     var currentImage = U.lget('cidx');
