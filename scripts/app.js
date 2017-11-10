@@ -9,7 +9,6 @@ var selectDirectory = function(callback) {
 
 $(".select-directory").on('click', function() {
   var cwd = window.cwd;
-
   if(cwd) {
     U.toast("Selected Folder: " + cwd);
     $('#selected-directory').html(cwd);
@@ -51,7 +50,14 @@ $('.proceed-to-yes-no').on('click', function() {
 
 var initImgJson = function(images) {
   var j = R.reduce(function(acc, value) {
-    acc[U.fullPath(value)] = null;
+    var valueAtImage = acc[U.fullPath(value)];
+
+    if(valueAtImage) {
+      acc[U.fullPath(value)] = valueAtImage;
+    } else {
+      acc[U.fullPath(value)] = null;
+    }
+
     return acc;
   }, {}, images);
 
@@ -60,12 +66,20 @@ var initImgJson = function(images) {
 
 // efp-select
 
+var reshuffleImageJson = function() {
+  var directory = U.lget('directory');
+  var files = fs.readdirSync(directory);
+  var imageFiles = R.filter(U.isImage, files);
+  initImgJson(imageFiles);
+}
 
 $('.efp-select').on('click', function() {
+  reshuffleImageJson();
   selectAs('normal');
 });
 
 $('.efp-deselect').on('click', function() {
+  reshuffleImageJson();
   selectAs('abnormal');
 });
 
