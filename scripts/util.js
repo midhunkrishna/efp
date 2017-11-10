@@ -28,9 +28,8 @@ var U = {
   },
 
   loadImage: function(path) {
-    var fullPath = U.fullPath(path);
-    U.toast("loading image: " + fullPath);
-    $("#img-holder").attr("src", "file://" + fullPath);
+    U.toast("loading image: " + path);
+    $("#img-holder").attr("src", "file://" + path);
   },
 
   fullPath: function(path) {
