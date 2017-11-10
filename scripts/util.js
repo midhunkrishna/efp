@@ -40,7 +40,7 @@ var U = {
 
   setImageSelection: function(imageName, value) {
     var json = JSON.parse(U.lget('imageDict'));
-    json[U.fullPath(imageName)] = value;
+    json[imageName] = value;
     U.lstore('imageDict', JSON.stringify(json));
   }
 }

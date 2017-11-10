@@ -105,15 +105,22 @@ $('.efp-save-dump').on('click', function(){
 
 var findNextNull = function() {
   var imageDict = JSON.parse(U.lget('imageDict'));
-  var nextImage = R.find(function(img){
-    return img[R.keys(img)[0]] === null;
-  }, imageDict);
+  var keys = R.keys(imageDict);
+
+  var nextImage = R.find(function(img) {
+    return imageDict[img] == null;
+  }, keys);
 
   return nextImage;
 }
 
 var selectAs = function(selectionType) {
   var nImg = findNextNull();
+  var pImg = U.lget('cImg');
+
+  if(pImg) {
+    U.setImageSelection(pImg, selectionType);
+  }
 
   if(nImg) {
     U.loadImage(nImg);
@@ -122,6 +129,7 @@ var selectAs = function(selectionType) {
     U.toast('Viewed All Images');
     U.makeVisible('.step-4');
   }
+
 }
 
 $('.back-once').on('click', function() {
