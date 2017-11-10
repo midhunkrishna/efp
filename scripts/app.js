@@ -103,39 +103,40 @@ $('.efp-save-dump').on('click', function(){
   });
 });
 
-var selectAs = function(selectionType) {
-  var imageFiles = U.lget('images').split(',');
-  var cidx = parseInt(U.lget('cidx'), 10) || 0;
-  var nidx = cidx + 1;
+var findNextNull = function() {
+  var imageDict = JSON.parse(U.lget('imageDict'));
+  var nextImage = R.find(function(img){
+    return img[R.keys(img)[0]] === null;
+  }, imageDict);
 
-  var cImg = imageFiles[cidx];
-  var nImg = imageFiles[nidx];
+  return nextImage;
+}
+
+var selectAs = function(selectionType) {
+  var nImg = findNextNull();
 
   if(nImg) {
     U.loadImage(nImg);
+    U.lstore('cImg', nImg);
   } else {
     U.toast('Viewed All Images');
     U.makeVisible('.step-4');
   }
-
-  if(cImg) {
-    U.setImageSelection(imageFiles[cidx], selectionType);
-    U.lstore('cidx', nidx);
-  }
 }
 
 $('.back-once').on('click', function() {
-  var imageFiles = U.lget('images').split(',');
-  var cidx = parseInt(U.lget('cidx'), 10) || 0;
+  var currentImage = U.lget('cImg');
+  var imageDict = JSON.parse(U.lget('imageDict'));
 
-  if(cidx > 0) {
-    var bidx = cidx - 1;
+  var keys = R.keys(imageDict);
+  var imgIndex = R.indexOf(currentImage, keys);
 
-    var cImg = imageFiles[bidx];
-    if(cImg) {
+  if(imgIndex > 0) {
+    var nImg = keys[imgIndex - 1];
+    if(nImg) {
       U.makeVisible('.step-3');
-      U.loadImage(cImg);
-      U.lstore('cidx', bidx);
+      U.loadImage(nImg);
+      U.lstore('cImg', nImg);
     } else {
       U.toast('Cannot go back. No image history back this point');
     }
@@ -163,8 +164,8 @@ $(function(){
   }
 
   if(directory && imageFilesString) {
-    var currentImage = U.lget('cidx');
-    U.loadImage(imageFiles[currentImage]);
+    var currentImage = U.lget('cImg');
+    U.loadImage(currentImage);
     U.makeVisible('.step-3');
   }
 });
