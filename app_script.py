@@ -1,7 +1,5 @@
-# import scipy.io
-
-# from matplotlib import pyplot as plt
-
+import scipy.io
+from matplotlib import pyplot as plt
 import sys
 import os
 
@@ -56,7 +54,7 @@ def read_data(filename):
     return train_x, test_x
 
 def image_exists_at_path(index):
-    return os.path.exists('./images/image' + str(i) + '.png')
+    return os.path.exists('./images/image' + str(index) + '.png')
 
 def main(filename):
     cwd = os.getcwd()
@@ -72,7 +70,7 @@ def main(filename):
 
     if newpid == 0:
         file = open('/tmp/directory','w')
-        file.write(cwd)
+        file.write(directory)
         file.close
 
         if os.path.exists('/Applications/efp.app'):
