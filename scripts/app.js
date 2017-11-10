@@ -39,7 +39,7 @@ $('.proceed-to-yes-no').on('click', function() {
   U.lstore('images', imageFiles);
 
   if(imageFiles.length > 0) {
-    U.loadImage(imageFiles[0]);
+    U.loadImage(U.fullPath(imageFiles[0]));
     initImgJson(imageFiles);
     U.makeVisible('.step-3');
   } else {
@@ -49,6 +49,8 @@ $('.proceed-to-yes-no').on('click', function() {
 });
 
 var initImgJson = function(images) {
+  var imageDict = JSON.parse(U.lget('imageDict')) || {};
+
   var j = R.reduce(function(acc, value) {
     var valueAtImage = acc[U.fullPath(value)];
 
@@ -59,7 +61,7 @@ var initImgJson = function(images) {
     }
 
     return acc;
-  }, {}, images);
+  }, imageDict, images);
 
   U.lstore('imageDict', JSON.stringify(j));
 }
@@ -77,13 +79,13 @@ var reshuffleImageJson = function() {
 }
 
 $('.efp-select').on('click', function() {
-  reshuffleImageJson();
   selectAs('normal');
+  reshuffleImageJson();
 });
 
 $('.efp-deselect').on('click', function() {
-  reshuffleImageJson();
   selectAs('abnormal');
+  reshuffleImageJson();
 });
 
 $('.efp-save-dump').on('click', function(){
@@ -116,10 +118,9 @@ var findNextNull = function() {
 
 var selectAs = function(selectionType) {
   var nImg = findNextNull();
-  var pImg = U.lget('cImg');
 
-  if(pImg) {
-    U.setImageSelection(pImg, selectionType);
+  if(nImg) {
+    U.setImageSelection(nImg, selectionType);
   }
 
   if(nImg) {
@@ -129,22 +130,28 @@ var selectAs = function(selectionType) {
     U.toast('Viewed All Images');
     U.makeVisible('.step-4');
   }
-
 }
 
 $('.back-once').on('click', function() {
   var currentImage = U.lget('cImg');
+
+  console.log(currentImage);
+
   var imageDict = JSON.parse(U.lget('imageDict'));
 
   var keys = R.keys(imageDict);
   var imgIndex = R.indexOf(currentImage, keys);
 
-  if(imgIndex > 0) {
-    var nImg = keys[imgIndex - 1];
+  if(imgIndex >= 0) {
+    var nImg = keys[imgIndex];
+
     if(nImg) {
       U.makeVisible('.step-3');
       U.loadImage(nImg);
-      U.lstore('cImg', nImg);
+      U.setImageSelection(nImg, null);
+      if(keys[imgIndex - 1]) {
+        U.lstore('cImg', keys[imgIndex - 1]);
+      }
     } else {
       U.toast('Cannot go back. No image history back this point');
     }
