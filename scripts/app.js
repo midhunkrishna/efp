@@ -70,7 +70,10 @@ var reshuffleImageJson = function() {
   var directory = U.lget('directory');
   var files = fs.readdirSync(directory);
   var imageFiles = R.filter(U.isImage, files);
-  initImgJson(imageFiles);
+
+  setTimeout(function() {
+    initImgJson(imageFiles);
+  }, 0);
 }
 
 $('.efp-select').on('click', function() {
